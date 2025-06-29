@@ -1,0 +1,36 @@
+/**
+ * Este arquivo conterá toda a lógica de interação com o banco de dados via Prisma
+ * Client para a entidade 'usuario'. Funções como createUser, findUserByEmail,
+ * updateUser, etc., morarão aqui. É a camada responsável por manipular os dados.
+ */
+import { PrismaClient } from '../../generated/prisma';   // Importação padrão do PrismaClient
+
+const prisma = new PrismaClient();
+
+export const usuarioService = {
+
+  /**
+   * Busca um usuário pelo ID.
+   */
+  async findUserById(id: number) {
+    return prisma.usuario.findUnique({
+      where: { id },
+    });
+  },
+
+  /**
+   * Busca um usuário pelo email.
+   */
+  async findUserByEmail(email: string) {
+    return prisma.usuario.findUnique({
+      where: { email },
+    });
+  },
+
+  /**
+   * Desconecta o Prisma Client (útil para encerramento da aplicação ou testes).
+   */
+  async disconnect() {
+    await prisma.$disconnect();
+  },
+};

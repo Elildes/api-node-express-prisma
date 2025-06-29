@@ -1,0 +1,4 @@
+.env
+/generated/prisma
+/.vscode
+/node_modules
