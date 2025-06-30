@@ -1,5 +1,5 @@
 import { write } from 'fs'
-import { PrismaClient } from './generated/prisma'
+import { PrismaClient } from '../generated/prisma'
 
 const prisma = new PrismaClient()
 

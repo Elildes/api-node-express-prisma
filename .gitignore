@@ -2,3 +2,4 @@
 /generated/prisma
 /.vscode
 /node_modules
+/dist

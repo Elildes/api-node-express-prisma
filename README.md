@@ -1,31 +1,179 @@
+# Api com Node.JS, Express.JS , Prisma (ORM de banco de dados) e Typescript
+
+API backend modelo que usa as seguintes tecnologias:
+
+- Node.js
+- Framework Express.js
+- TypeScript
+- Prisma ORM
+- Banco de Dados SQLite
+
 # Configurações iniciais
 
-## Criando o tsconfig.json
+Primeiramente se certifique que tem o Node.js e o npm instalado:  
+```
+    > node -v
+    > npm -v
+```
+
+## Criar o projeto básico com o gerador de Aplicativos do Express
+
+Fazer conforme o link em [Fontes](#gerador-express)  
+
+O aplicativo gerado possui a seguinte estrutura de diretórios:
+
+```
+.
+├── app.js
+├── bin
+│   └── www
+├── package.json
+├── public
+│   ├── images
+│   ├── javascripts
+│   └── stylesheets
+│       └── style.css
+├── routes
+│   ├── index.js
+│   └── users.js
+└── views
+    ├── error.pug
+    ├── index.pug
+    └── layout.pug
+
+7 directories, 9 files
+
+```
+
+# Alterar a aplicação para Typescript
+
+## Baixar o Typescript para o projeto
+    > npm install typescript --save-dev
+
+**Obs.**: ou instalar o [TypeScript 5.8.3 para Visual Studio (SDK)](https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-583) como uma extensão do Visual Studio.
+  
+## Criar o tsconfig.json
     > npx tsc --init
 
-## Alterando o package.json
+## Configurar o arquivo tsconfig.json
+
+Principalmente a pasta `./dist` de saída para os arquivos compilados .js.  
+
 ```
-  ...
-  "scripts": {
+{
+  "compilerOptions": {
+    ...
+    "outDir": "./dist",         /* Pasta de saída para os arquivos compilados .js. */
+    "rootDir": "./",            /* Raiz do seu código TypeScript. */
+    ...
+  },
+  "include": [
+    "**/*.ts"                   /* Inclui todos os arquivos .ts no projeto. */
+  ],
+  "exclude": [
+    "node_modules"              /* Exclui a pasta node_modules da compilação. */
+  ]
+}
+```
+
+## Adicionar dependências de desenvolvimento no package.json
+
+Dependências de desenvolvimento são aquelas necessárias apenas para o desenvolvimento e teste do projeto, e não para a execução em produção.  
+
+    > npm install --save-dev @types/express @types/node @types/debug @types/morgan @types/cookie-parser @types/http-errors prisma ts-node ts-node-dev typescript
+
+**Obs.:** caso queira uma versão especifica de um pacote, indique a versão desejada como abaixo:  
+
+    > npm install --save-dev @types/express@^4.17.21 @types/node@^20.14.10 ...
+
+**Obs.**: este comando também poderá ser usado coma a flag `-D`:  
+
+    > npm install -D @types/express@^4.17.21 ...
+
+**Obs.:**  
+- Caso precise atualizar algum pacote, execute o comando parecido com o abaixo.  
+- O comando abaixo atualiza dois pacotes:
+    
+    > npm update express @types/express
+
+## Altere os seguintes arquivos para Typescript
+
+    > bin/www para bin/www.ts
+    > app.js para app.ts
+
+## Adicionar scripts no package.json
+
+```
+"scripts": {
     "build": "npx tsc",                               
-    "start": "node dist/bin/www.js",                  
+    "start": "node dist/bin/www.js",
     "dev": "ts-node-dev --respawn --transpile-only ./bin/www.ts"
   },
-  ...
-    "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/node": "^20.14.10",
-    "@types/debug": "^4.1.12",
-    "@types/morgan": "^1.9.9",
-    "@types/cookie-parser": "^1.4.7",
-    "@types/http-errors": "^2.0.4",
-    "prisma": "^6.10.1",
-    "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.5.3"
-  }
-  ...
 ```
+
+## Criar nova estrutura de diretórios
+
+```
+.
+├── bin
+│   └── www.ts
+├── public
+│   ├── images
+│   ├── javascripts
+│   └── stylesheets
+│       └── style.css
+├── src
+│   ├── controllers
+│       ├── usuarioController.ts
+│   ├── routes
+│       ├── usuarioRoutes.ts
+│   ├── services
+│       ├── usuarioService.ts
+│   ├── app.js
+├── views
+│   ├── error.jade
+│   ├── index.jade
+│   └── layout.jade
+├── package.json
+└── tsconfig.json
+```
+
+
+## Alterar os arquivos 'app.ts' e 'bin/www.ts'
+
+### Arquivo "app.ts" - inicializa a aplicação
+
+Este arquivo é Responsável por configurar a aplicação Express (middlewares, rotas, etc.).
+
+Alterar conforme o modelo no diretpotio `src/app.ts`.
+
+### Arquivo bin/www.ts - servidor
+
+Este arquivo é responsável por iniciar o servidor HTTP usando a aplicação configurada e gerenciar seu ciclo de vida (porta, tratamento de erros de servidor, desligamento gracioso).
+
+
+Alterar conforme o modelo no diretpotio `bin/www.ts`.
+
+# Rodar a aplicação API
+
+## Rodar em desenvolvimento
+
+Use durante o desenvolvimento para ter recarregamento automático e execução direta do TypeScript.
+
+    > npm run dev
+
+## Rodar antes do deploy
+
+Antes de implantar em produção, sempre execute para compilar seu código.
+
+    > npm run build
+
+## Rodar em produção
+
+Em produção, execute este comando, que executará a versão compilada em JavaScript do seu aplicativo.
+
+    > npm run start
+
 
 # Prisma ORM
 
@@ -125,40 +273,17 @@ Faz o mapeamento dos modelos para tabelas de banco de dados.
 
 Em seguida carregue http://localhost:3000/ no seu navegador para acessar o aplicativo.
 
-O aplicativo gerado possui a seguinte estrutura de diretórios:
-
-```
-.
-├── app.js
-├── bin
-│   └── www
-├── package.json
-├── public
-│   ├── images
-│   ├── javascripts
-│   └── stylesheets
-│       └── style.css
-├── routes
-│   ├── index.js
-│   └── users.js
-└── views
-    ├── error.pug
-    ├── index.pug
-    └── layout.pug
-
-7 directories, 9 files
-
-```
+<div id='gerador-express'/>
 
 ## Fontes
 
 [Node.JS](https://nodejs.org/en/)  
 [Gerador de aplicativos do Express](https://expressjs.com/pt-br/starter/generator.html)  
+[Baixar e usar o TypeScript](https://www.typescriptlang.org/download/)  
 [Manual JavaScript - Mozila Web Docs](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Guide)  
 [Prisma (ORM)](https://www.prisma.io/docs/getting-started/quickstart-sqlite)  
 [SQLite - integração com Prisma](https://www.prisma.io/docs/orm/overview/databases/sqlite)  
 [SQLite - banco de dados](https://www.sqlite.org/)  
-[Manual do TypeScript](https://www.typescriptlang.org/docs/handbook/2/basic-types.html)  
 [Criando a primeira tabela com Prisma
 ](https://www.youtube.com/watch?v=KjZ5RmrSptI&list=PL3rXHPXruajKEyb8OHKqJBieRtmP-Kbhx&index=8&ab_channel=Rocketseat)  
 [Aprenda em 13:37: Prisma
