@@ -28,6 +28,22 @@ export const usuarioService = {
   },
 
   /**
+   * Cria um novo usuário.
+   */
+  async createNewUser(userData: {email: string, senha: string, nome:  string, papel: string}) {
+    return prisma.usuario.create({
+      data: userData,
+    });
+  },
+
+  /**
+   * Busca todos os usuários.
+   */
+  async getAllUsers() {
+    return prisma.usuario.findMany();
+  },
+  
+  /**
    * Desconecta o Prisma Client (útil para encerramento da aplicação ou testes).
    */
   async disconnect() {

@@ -174,6 +174,9 @@ Em produção, execute este comando, que executará a versão compilada em JavaS
 
     > npm run start
 
+## API Frontend para testes
+
+Usar as [coleções](./docs/API-Node-Express-Prisma.postman_collection_semhash.json) da ferramenta Postman.  
 
 # Prisma ORM
 

@@ -9,15 +9,12 @@ import { usuarioController } from '../controllers/usuarioController'; // Importa
 const router = Router();
 
 // Rotas para CRUD de usuários
-//router.post('/', usuarioController.createNewUser);        // POST /users
-//router.get('/', usuarioController.getAllUsers);           // GET /users
-
-router.get('/:id', (req, res) => usuarioController.getUserById(req, res))  // GET /users/:id
-
+router.post('/new', usuarioController.createNewUser);       // POST /users/new
+router.get('/', usuarioController.getAllUsers);             // GET /users
+router.get('/:id', usuarioController.getUserById);          // GET /users/:id
 //router.put('/:id', usuarioController.updateUser);         // PUT /users/:id
 //router.delete('/:id', usuarioController.deleteUser);      // DELETE /users/:id
-
 // Rota de autenticação
-//router.post('/login', usuarioController.login);           // POST /users/login
+router.post('/login', usuarioController.login);           // POST /users/login
 
 export default router;
