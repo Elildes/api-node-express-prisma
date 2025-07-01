@@ -9,7 +9,8 @@
 /**
  * Module dependencies.
  */
-import app from '../src/app'; // Importa a instância do Express configurada
+import 'dotenv/config';         // Carrega as variáveis de ambiente antes da aplicação rodar
+import app from '../src/app';   // Importa a instância do Express configurada
 import debug from 'debug';
 import http from 'http';
 

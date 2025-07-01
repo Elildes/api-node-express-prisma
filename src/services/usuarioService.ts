@@ -3,9 +3,11 @@
  * Client para a entidade 'usuario'. Funções como createUser, findUserByEmail,
  * updateUser, etc., morarão aqui. É a camada responsável por manipular os dados.
  */
-import { PrismaClient } from '../../generated/prisma';   // Importação padrão do PrismaClient
+import { PrismaClient } from '@prisma/client/edge'              // Importação padrão do PrismaClient
+import { withAccelerate } from '@prisma/extension-accelerate'
 
-const prisma = new PrismaClient();
+// Instancia o Prisma Client, passando a extensão Accelerate
+const prisma = new PrismaClient().$extends(withAccelerate())
 
 export const usuarioService = {
 

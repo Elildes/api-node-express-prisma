@@ -6,7 +6,8 @@ API backend modelo que usa as seguintes tecnologias:
 - Framework Express.js
 - TypeScript
 - Prisma ORM
-- Banco de Dados SQLite
+- Banco de Dados Prisma Postgre (online)
+- Prisma Data Platform
 
 # Configurações iniciais
 
@@ -80,7 +81,7 @@ Principalmente a pasta `./dist` de saída para os arquivos compilados .js.
 
 Dependências de desenvolvimento são aquelas necessárias apenas para o desenvolvimento e teste do projeto, e não para a execução em produção.  
 
-    > npm install --save-dev @types/express @types/node @types/debug @types/morgan @types/cookie-parser @types/http-errors prisma ts-node ts-node-dev typescript
+    > npm install --save-dev @types/express @types/node @types/debug @types/morgan @types/cookie-parser @types/http-errors prisma ts-node ts-node-dev dotenv typescript
 
 **Obs.:** caso queira uma versão especifica de um pacote, indique a versão desejada como abaixo:  
 
@@ -134,10 +135,10 @@ Dependências de desenvolvimento são aquelas necessárias apenas para o desenvo
 │   ├── error.jade
 │   ├── index.jade
 │   └── layout.jade
+├── .env
 ├── package.json
 └── tsconfig.json
 ```
-
 
 ## Alterar os arquivos 'app.ts' e 'bin/www.ts'
 
@@ -198,10 +199,30 @@ Next steps:
 4. Tip: Explore how you can extend the ORM with scalable connection pooling, global caching, and a managed serverless Postgres database. Read: https://pris.ly/cli/beyond-orm
 ```
 
-## Configurar o banco SQLite
-    > Ver o site do prisma em: ORM > banco de dados > SQLite
+## Configurar o banco Prisma Postgre
+
+Criar um novo projeto em [Prisma Data Platform](https://console.prisma.io/).  
+
+    > Criar novo projeto na seção 'Prisma Postgre' e seguir o passo a passo.
 
 ## Para que o Node leia o .env
+
+
+**Obs.**:
+- O arquivo `.env` terá as variáveis de ambientes para acessar o banco de dados.  
+- Será nessário instalar o pacote `dotenv` para que este  carregue essas variáveis antes que a aplicação (e o Prisma) comece a rodar.  
+- Configure a aplicação para usar o `dotenv`: importar o `dotenv` antes de qualquer importação, no arquivo ponto de entrada da aplicação:  
+```bash
+// ./bin/www.ts
+
+import 'dotenv/config'; // <-- ADICIONE ESTA LINHA NO TOPO
+
+// ... resto do seu código (import http, import app, etc.)
+import app from '../app';
+import http from 'http';
+
+// ...
+```
 
 package.json:  
 ```
@@ -229,11 +250,14 @@ Arquivo configuração do VS Code: **{}settings.json**:
 
 ## Arquivo .env
 
-    > DATABASE_URL="file:./dev.db"
+    > DATABASE_URL=<sua_url_gerada_pelo_prima-postgre_aqui>
 
 ## Arquivo schema.prisma
 
     > Definir a estrutura do banco de dados, quais tabelas tem no banco de dados
+**Obs.**: Toda vez que o arquivo schema.prisma for alterado, rodar o seguinte comando:  
+
+    > npx prisma regenerate
 
 ## Executar Prisma Migrate
 
@@ -244,7 +268,6 @@ Faz o mapeamento dos modelos para tabelas de banco de dados.
 **Obs.**:
 
 1. cria o arquivo `./migrations/migration.sql` com o código sql para criar as tabelas.  
-2. O arquivo do banco de dados criado `./prisma/dev.db` pode ser visualizado com qualquer ferramenta de visualização de banco de dados.  
 
 ## Visualizar/manipular o banco de dados com o Prisma Studio
 
@@ -285,6 +308,7 @@ Em seguida carregue http://localhost:3000/ no seu navegador para acessar o aplic
 [Baixar e usar o TypeScript](https://www.typescriptlang.org/download/)  
 [Manual JavaScript - Mozila Web Docs](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Guide)  
 [Prisma (ORM)](https://www.prisma.io/docs/getting-started/quickstart-sqlite)  
+[Prisma Data Platform](https://console.prisma.io/).  
 [SQLite - integração com Prisma](https://www.prisma.io/docs/orm/overview/databases/sqlite)  
 [SQLite - banco de dados](https://www.sqlite.org/)  
 [Criando a primeira tabela com Prisma
